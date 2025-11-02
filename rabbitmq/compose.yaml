@@ -1,0 +1,17 @@
+services:
+  rabbitmq:
+    image: rabbitmq:4.2
+    container_name: rabbitmq
+    ports:
+      - '4369:4369'
+      - '5551:5551'
+      - '5552:5552'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    environment:
+      - RABBITMQ_LOGS=-
+      - RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=${RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS}
+    volumes:
+      - './data:/bitnami/rabbitmq/mnesia'
+    restart: unless-stopped

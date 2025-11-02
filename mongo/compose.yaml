@@ -1,0 +1,17 @@
+services:
+  mongodb:
+    image: mongodb:8.2
+    container_name: mongodbv82
+    ports:
+      - "27017:27017"
+    volumes:
+      - './data:/bitnami/mongodb'
+    environment:
+      - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "if [ -z \"${MONGODB_ROOT_PASSWORD}\" ]; then mongosh --quiet --eval \"db.adminCommand({ping:1})\" >/dev/null; else mongosh --quiet -u \"${MONGODB_ROOT_USERNAME:-root}\" -p \"${MONGODB_ROOT_PASSWORD}\" --authenticationDatabase admin --eval \"db.adminCommand({ping:1})\" >/dev/null; fi"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s

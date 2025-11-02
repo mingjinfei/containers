@@ -1,0 +1,16 @@
+services:
+  mysql9:
+    image: mysql:9.5
+    container_name: mysql9
+    ports:
+      - '3309:3306'
+    volumes:
+      - './data:/bitnami/mysql/data'
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    healthcheck:
+      test: ['CMD', '/opt/bitnami/scripts/mysql/healthcheck.sh']
+      interval: 15s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
