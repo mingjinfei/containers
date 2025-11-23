@@ -1,3 +1,9 @@
 **/data
 **/log
+**/logs
+**/ssl
 **/secrets
+**/trusted-certs
+**/config/**
+!**/config/*.cnf
+!**/config/*.conf

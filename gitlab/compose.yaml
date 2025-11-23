@@ -1,0 +1,27 @@
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    restart: unless-stopped
+    hostname: "gitlab.local.dev"
+    environment:
+      TZ: Asia/Shanghai
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.local.dev'
+        gitlab_rails['time_zone'] = 'Asia/Shanghai'
+        gitlab_rails['env'] = { 'TZ' => 'Asia/Shanghai' }
+        gitlab_rails['gitlab_shell_ssh_port'] = 22
+        letsencrypt['enable'] = false
+        nginx['ssl_certificate'] = "/etc/gitlab/ssl/gitlab.local.dev.crt"
+        nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/gitlab.local.dev.key"
+        nginx['redirect_http_to_https'] = true
+    ports:
+      - "80:80"
+      - "443:443"
+      - "22:22"
+    volumes:
+      - "./config:/etc/gitlab"
+      - "./logs:/var/log/gitlab"
+      - "./data:/var/opt/gitlab"
+      - "./ssl:/etc/gitlab/ssl:ro"
+    shm_size: "2gb"
